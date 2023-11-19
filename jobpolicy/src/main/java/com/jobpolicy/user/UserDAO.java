@@ -1,7 +1,9 @@
 package main.java.com.jobpolicy.user;
-import main.java.com.jobpolicy.dao.DBConn;
 import java.sql.Connection;
 import java.sql.Statement;
+
+import main.java.com.jobpolicy.DBConn;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
