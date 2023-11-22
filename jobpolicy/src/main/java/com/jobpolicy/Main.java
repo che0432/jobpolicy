@@ -40,6 +40,9 @@ public class Main {
 		
 		//È¸¿øÅ»Åð Å×½ºÆ®
 		dao.userDelete(userid);
+		
+		//DB Á¾·á
+		dao.closeDBConnection();
 	}
 
 }
