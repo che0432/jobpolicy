@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class DBConnManager {
 	static String url = "jdbc:mysql://localhost:3306/jobpolicy?serverTimezone=UTC";
 	static String id = "root"; 
-	static String pwd = "che0432!";
+	static String pwd = "비밀번호";
 
 	public static Connection getConnection() throws SQLException {
 		return DriverManager.getConnection(url, id, pwd);

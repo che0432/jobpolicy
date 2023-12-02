@@ -12,7 +12,7 @@ public class PublicJobDAO {
     PreparedStatement PST = null; //PST=CN.prePareStatement("insert~")
     ResultSet RS = null; //RS = ST.executeQuery("select~");
     String sql = "";
-    
+
     //DB 연결이 유효한지 확인. 유효하지 않으면 새로운 연결 수립
     void validateDBConnection() {
         try {
@@ -37,9 +37,9 @@ public class PublicJobDAO {
         PublicJob[] jobs = new PublicJob[20];
 
         try {
-        	// DB 연결 확인
+            // DB 연결 확인
             validateDBConnection();
-            
+
             String orderClause = sortOrder.equals("등록순") ? "ASC" : "DESC";
             sql = "SELECT * FROM publicjob ORDER BY beginDate " + orderClause + " LIMIT 20 OFFSET ?";
             PST = CN.prepareStatement(sql);
@@ -66,9 +66,9 @@ public class PublicJobDAO {
     public PublicJob[] selectPublicJob(int page){
         PublicJob[] policyApiList = new PublicJob[20];
         try{
-        	// DB 연결 확인
+            // DB 연결 확인
             validateDBConnection();
-            
+
             sql = "select * from Publicjob order by jobId limit 20 offset ?";
             PST = CN.prepareStatement(sql);
             PST.setInt(1, (page - 1) * 20);

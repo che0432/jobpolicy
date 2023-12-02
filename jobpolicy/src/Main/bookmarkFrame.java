@@ -12,7 +12,7 @@ import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.SQLException;
 import Bookmark.BookmarkDAO;
-import Bookmark.Bookmark;
+import Bookmark.BookmarkInfo;
 
 public class bookmarkFrame extends JFrame implements ActionListener {
     String userId;
@@ -25,7 +25,7 @@ public class bookmarkFrame extends JFrame implements ActionListener {
     JLabel status, pageLabel;
     int currentPage = 1;
     String sortedBy = "";
-    
+
     BookmarkDAO dao = new BookmarkDAO();
 
     bookmarkFrame(String userId) {
@@ -42,7 +42,8 @@ public class bookmarkFrame extends JFrame implements ActionListener {
         Container contentPane = getContentPane();
 
         // table
-        String colNames[] = {"번호", "정책번호", "일자리번호", "생성일"};
+        String colNames[] = {"번호", "제목", "기관명", "시작일", "종료일", "상세주소", "생성일"};
+//        {"번호", "제목", "기관명", "시작일", "종료일", "카테고리", "상세주소"}
         DefaultTableModel model = new DefaultTableModel(colNames, 0) {
             public boolean isCellEditable(int row, int col) {
                 if (col == 0) return false;
@@ -96,11 +97,11 @@ public class bookmarkFrame extends JFrame implements ActionListener {
         deleteBookMarkButton.addActionListener(this);
 
         setPreferredSize(new Dimension(1300, 500));
-        setLocationRelativeTo(null);
         pack();
+        setLocationRelativeTo(null);
         setVisible(true);
         this.userId = userId;
-        initBookmark();
+        initBookmarkInfo();
     }
 
     //DB 연결 해제
@@ -116,17 +117,19 @@ public class bookmarkFrame extends JFrame implements ActionListener {
     }
 
     // 테이블 초기화 (모든 레코드)
-    public int initBookmark() {
-
+    public int initBookmarkInfo() {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        Bookmark[] list = dao.checkBookmark(userId,1);
+        BookmarkInfo[] list = dao.selectBookmarkInfo(userId, 1);
         int count = 0;
         for(int i = 0; i < 20; i++) {
-            String [] arr = new String[4];
+            String [] arr = new String[7];
             arr[0] = Integer.toString(list[i].getBookmarkId());
-            arr[1] = Integer.toString(list[i].getPolicyAId());
-            arr[2] = Integer.toString(list[i].getJobId());
-            arr[3] = list[i].getCreateAt();
+            arr[1] = list[i].getTitle();
+            arr[2] = list[i].getInstitution();
+            arr[3] = list[i].getBeginDate();
+            arr[4] = list[i].getEndDate();
+            arr[5] = list[i].getURL();
+            arr[6] = list[i].getCreateAt();
 
             model.addRow(arr);
         }
@@ -136,18 +139,21 @@ public class bookmarkFrame extends JFrame implements ActionListener {
     }
 
     // 목록
-    public int selectPolicyApi(int page) {
+    public int selectBookmarkInfo(int page) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setNumRows(0);
-        
-        Bookmark[] list = dao.checkBookmark(userId,page);
+
+        BookmarkInfo[] list = dao.selectBookmarkInfo(userId, page);
         int count = 0;
         for(int i = 0; i < 20; i++) {
-            String [] arr = new String[4];
+            String [] arr = new String[7];
             arr[0] = Integer.toString(list[i].getBookmarkId());
-            arr[1] = Integer.toString(list[i].getPolicyAId());
-            arr[2] = Integer.toString(list[i].getJobId());
-            arr[3] = list[i].getCreateAt();
+            arr[1] = list[i].getTitle();
+            arr[2] = list[i].getInstitution();
+            arr[3] = list[i].getBeginDate();
+            arr[4] = list[i].getEndDate();
+            arr[5] = list[i].getURL();
+            arr[6] = list[i].getCreateAt();
 
             model.addRow(arr);
         }
@@ -158,7 +164,7 @@ public class bookmarkFrame extends JFrame implements ActionListener {
 
     public void deletePolicyBookmark(String bookmakrId) {
         dao.delBookmark(Integer.parseInt(bookmakrId));
-        selectPolicyApi(currentPage);
+        selectBookmarkInfo(currentPage);
         setStatus("삭제되었습니다.");
 
         setPageLabel();
@@ -168,11 +174,11 @@ public class bookmarkFrame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         Object src = ae.getSource();
         if (src == nextButton) {
-            selectPolicyApi(++currentPage);
+            selectBookmarkInfo(++currentPage);
         }
         else if (src == preButton){
             if(currentPage > 1)
-                selectPolicyApi(--currentPage);
+                selectBookmarkInfo(--currentPage);
         }
         else if(src == deleteBookMarkButton){
             deletePolicyBookmark(bookmarkIdText.getText().trim());

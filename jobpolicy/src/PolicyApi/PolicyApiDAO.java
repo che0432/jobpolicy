@@ -37,9 +37,9 @@ public class PolicyApiDAO {
         PolicyApi[] policies = new PolicyApi[20];
 
         try {
-        	// DB 연결 확인
+            // DB 연결 확인
             validateDBConnection();
-            
+
             String orderClause = sortOrder.equals("등록순") ? "ASC" : "DESC";
             sql = "SELECT * FROM policyapi ORDER BY beginDate " + orderClause + " LIMIT 20 OFFSET ?";
             PST = CN.prepareStatement(sql);
@@ -68,9 +68,9 @@ public class PolicyApiDAO {
         PolicyApi[] filteredPolicies = new PolicyApi[20];
 
         try {
-        	// DB 연결 확인
+            // DB 연결 확인
             validateDBConnection();
-            
+
             // 기업, 생활, 구직, 주거, 재직활동
             sql = "SELECT * FROM policyapi WHERE category = \"" + category
                     + "\" limit 20 offset " + (page - 1) * 20;
@@ -98,9 +98,9 @@ public class PolicyApiDAO {
     public PolicyApi[] selectPolicyApi(int page){
         PolicyApi[] policyApiList = new PolicyApi[20];
         try{
-        	// DB 연결 확인
+            // DB 연결 확인
             validateDBConnection();
-            
+
             sql = "select * from policyapi order by policyAId limit 20 offset ?";
             PST = CN.prepareStatement(sql);
             PST.setInt(1, (page - 1) * 20);

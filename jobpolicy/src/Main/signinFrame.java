@@ -17,8 +17,8 @@ public class signinFrame extends JFrame implements ActionListener {
     JButton signUpButton, signInButton;
     JPanel panel;
     JLabel status;
-    
-    
+
+
     signinFrame() {
         setTitle("·Î±×ÀÎ");
 
@@ -69,8 +69,8 @@ public class signinFrame extends JFrame implements ActionListener {
         signUpButton.addActionListener(this);
         signInButton.addActionListener(this);
         setPreferredSize(new Dimension(400, 150));
-        setLocationRelativeTo(null);
         pack();
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 
@@ -93,7 +93,7 @@ public class signinFrame extends JFrame implements ActionListener {
             new signupFrame();
         }
         else if (src == signInButton){
-        	UserDAO dao = new UserDAO();
+            UserDAO dao = new UserDAO();
             String idStr = idText.getText().trim();
             String pwStr = pwText.getText().trim();
             int login = dao.login(idStr, pwStr);

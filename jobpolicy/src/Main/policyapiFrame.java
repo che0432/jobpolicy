@@ -30,7 +30,7 @@ public class policyapiFrame extends JFrame implements ActionListener {
 
     BookmarkDAO bdao = new BookmarkDAO();
     PolicyApiDAO pdao = new PolicyApiDAO();
-    
+
     policyapiFrame(String userId) {
         setTitle("공공 일자리 관련 정책");
 
@@ -110,8 +110,8 @@ public class policyapiFrame extends JFrame implements ActionListener {
         addBookMarkButton.addActionListener(this);
 
         setPreferredSize(new Dimension(1300, 500));
-        setLocationRelativeTo(null);
         pack();
+        setLocationRelativeTo(null);
         setVisible(true);
         initPolicyApi();
         this.userId = userId;
@@ -228,7 +228,7 @@ public class policyapiFrame extends JFrame implements ActionListener {
     }
 
     public void addPolicyBookmark(String policyAId) {
-        
+
         Bookmark newBookmark = new Bookmark(0, Integer.parseInt(policyAId), userId, 0 , "");
         bdao.addBookmarkPolicyapi(newBookmark);
         setStatus("즐겨찾기가 추가되었습니다.");

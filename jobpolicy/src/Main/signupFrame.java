@@ -19,7 +19,7 @@ public class signupFrame extends JFrame implements ActionListener {
     JPanel panel;
     JComboBox<String> genderBox;
     JLabel status;
-    
+
     signupFrame() {
         setTitle("회원가입");
 
@@ -82,11 +82,11 @@ public class signupFrame extends JFrame implements ActionListener {
         signUpButton.addActionListener(this);
         signInButton.addActionListener(this);
         setPreferredSize(new Dimension(600, 150));
-        setLocationRelativeTo(null);
         pack();
+        setLocationRelativeTo(null);
         setVisible(true);
     }
-    
+
     //DB 연결 해제
     void closeDBConnection() {
         try {
@@ -106,7 +106,7 @@ public class signupFrame extends JFrame implements ActionListener {
             new signinFrame();
         }
         else if (src == signUpButton){
-        	UserDAO dao = new UserDAO();
+            UserDAO dao = new UserDAO();
             String idStr = idText.getText().trim();
             String pwStr = pwText.getText().trim();
             String genderStr = genderBox.getSelectedItem().toString();

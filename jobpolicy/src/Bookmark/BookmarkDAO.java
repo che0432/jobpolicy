@@ -13,7 +13,7 @@ public class BookmarkDAO {
     ResultSet RS = null; //RS = ST.executeQuery("select~");
 
     String msg = "";
-    
+
     //DB 연결이 유효한지 확인. 유효하지 않으면 새로운 연결 수립
     void validateDBConnection() {
         try {
@@ -37,9 +37,9 @@ public class BookmarkDAO {
     public void addBookmarkPolicyapi(Bookmark info) {
 
         try {
-        	// DB 연결 확인
+            // DB 연결 확인
             validateDBConnection();
-            
+
             //bookmarkId, policyAId, userId, jobId, createAt
             msg = "insert into bookmark values(NULL,?,?,NULL,default)";
             PST = CN.prepareStatement(msg);
@@ -56,9 +56,9 @@ public class BookmarkDAO {
     //북마크 추가(공공일자리정보)
     public void addBookmarkPublicjob(Bookmark info) {
         try {
-        	// DB 연결 확인
+            // DB 연결 확인
             validateDBConnection();
-            
+
             //bookmarkId, policyAId, userId, jobId, createAt
             msg = "insert into bookmark values(NULL,NULL,?,?,default)";
             PST = CN.prepareStatement(msg);
@@ -75,9 +75,9 @@ public class BookmarkDAO {
     //북마크 삭제
     public void delBookmark(int bookmarkId) {
         try {
-        	// DB 연결 확인
+            // DB 연결 확인
             validateDBConnection();
-            
+
             msg = "delete from bookmark where bookmarkId = ?";
             PST = CN.prepareStatement(msg);
             PST.setInt(1, bookmarkId);
@@ -94,9 +94,9 @@ public class BookmarkDAO {
         Bookmark[] bookmarkList = new Bookmark[20];
 
         try {
-        	// DB 연결 확인
+            // DB 연결 확인
             validateDBConnection();
-            
+
             msg = "select * from bookmark where userid = ? order by jobId ASC limit 20 offset ?";
             PST = CN.prepareStatement(msg);
             PST.setString(1, userId);
@@ -116,5 +116,37 @@ public class BookmarkDAO {
             if (PST != null)	try { PST.close(); }	catch (Exception e) {}
         }
         return bookmarkList;
+    }
+
+    public BookmarkInfo[] selectBookmarkInfo(String userId, int page){
+        BookmarkInfo[] bookmarkInfoList = new BookmarkInfo[20];
+
+        try {
+            validateDBConnection();
+
+            msg = "select bookmarkId, title, institution, beginDate, endDate, URL, createAt " +
+                    "from bookmark as b natural join publicjob where userId = ? union " +
+                    "select bookmarkId, title, institution, beginDate, endDate, URL, createAt " +
+                    "from bookmark as b natural join policyapi where userId = ? limit 20 offset ?";
+            PST = CN.prepareStatement(msg);
+            PST.setString(1, userId);
+            PST.setString(2, userId);
+            PST.setInt(3, (page - 1) * 20);
+            RS = PST.executeQuery();
+
+            int i = 0;
+            while (RS.next()) {
+                BookmarkInfo newOne = new BookmarkInfo(RS.getInt(1),RS.getString(2),
+                        RS.getString(3),RS.getString(4),RS.getString(5),
+                        RS.getString(6),RS.getString(7));
+                bookmarkInfoList[i++] = newOne;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            if (RS != null)		try { RS.close(); }		catch (Exception e) {}
+            if (PST != null)	try { PST.close(); }	catch (Exception e) {}
+        }
+        return bookmarkInfoList;
     }
 }

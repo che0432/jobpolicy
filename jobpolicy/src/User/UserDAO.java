@@ -32,13 +32,13 @@ public class UserDAO {
             e.printStackTrace();
         }
     }
-    
+
     // 아이디 존재 여부 체크
     public int userIdCheck(String userid) {
         try {
-        	// DB 연결 확인
+            // DB 연결 확인
             validateDBConnection();
-        	
+
             msg = "select userid from user where userid = ?";
             PST = CN.prepareStatement(msg);
             PST.setString(1, userid);
@@ -58,9 +58,9 @@ public class UserDAO {
     // 회원가입 저장
     public void userRegister(User user) {
         try {
-        	// DB 연결 확인
+            // DB 연결 확인
             validateDBConnection();
-            
+
             //userid, password, gender, birth, createAt
             msg = "insert into user values(?,UNHEX(MD5(?)),?,?,default)";
             PST = CN.prepareStatement(msg);
@@ -82,10 +82,10 @@ public class UserDAO {
             if (userIdCheck(userid) == -1) {
                 return 0; //존재하지 않는 아이디 0 리턴
             }
-            
+
             // DB 연결 확인
             validateDBConnection();
-            
+
             msg = "select userid from user where userid = ? and password = UNHEX(MD5(?))";
             PST = CN.prepareStatement(msg);
             PST.setString(1, userid);

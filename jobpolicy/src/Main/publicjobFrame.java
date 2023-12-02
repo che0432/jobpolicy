@@ -27,10 +27,10 @@ public class publicjobFrame extends JFrame implements ActionListener {
     JLabel status, pageLabel;
     int currentPage = 1;
     String sortedBy = "";
-    
+
     BookmarkDAO bdao = new BookmarkDAO();
     PublicJobDAO jdao = new PublicJobDAO();
-    
+
     publicjobFrame(String userId) {
         setTitle("공공 일자리 정보");
 
@@ -106,8 +106,8 @@ public class publicjobFrame extends JFrame implements ActionListener {
         addBookMarkButton.addActionListener(this);
 
         setPreferredSize(new Dimension(1500, 500));
-        setLocationRelativeTo(null);
         pack();
+        setLocationRelativeTo(null);
         setVisible(true);
         initPublicjob();
         this.userId = userId;
@@ -129,7 +129,7 @@ public class publicjobFrame extends JFrame implements ActionListener {
     public int initPublicjob() {
 
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        
+
         PublicJob[] list = jdao.selectPublicJob(1);
         int count = 0;
         for(int i = 0; i < list.length; i++) {
